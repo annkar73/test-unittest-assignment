@@ -25,9 +25,9 @@ function createNewTodo(todoText: string, todos: Todo[]) {
   let result = addTodo(todoText, todos);
 
   if (result.success) {
-    createHtml(todos);
+    createHtml(todos); // första test - måste mocka addTodo och kontrollera att createHtml anropats
   } else {
-    displayError(result.error, true);
+    displayError(result.error, true); // andra test - 
   }
 }
 
