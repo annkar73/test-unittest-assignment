@@ -39,7 +39,7 @@ export function toggleTodo(todo: Todo) {
 }
 
 
-function clearTodos(todos: Todo[]) {
+export function clearTodos(todos: Todo[]) {
   removeAllTodos(todos);
   createHtml(todos);
 }

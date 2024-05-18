@@ -1,4 +1,4 @@
-import { createNewTodo, toggleTodo } from "../ts/main";
+import { createNewTodo, toggleTodo, clearTodos } from "../ts/main";
 import { IAddResponse } from "../ts/models/IAddResponse";
 import { Todo } from "../ts/models/todo";
 
@@ -11,12 +11,14 @@ describe("main tests", () => {
     let mockedCreateHtml: jest.SpyInstance<void>;
     let mockedDisplayError: jest.SpyInstance<void>;
     let mockedChangeTodo: jest.SpyInstance<void>;
+    let mockedRemoveAllTodos: jest.SpyInstance<void>;
 
     beforeEach(() => {
         mockedAddTodo = jest.spyOn(functions, "addTodo");
         mockedCreateHtml = jest.spyOn(htmlFunctions, "createHtml");
         mockedDisplayError = jest.spyOn(htmlFunctions, "displayError");
         mockedChangeTodo = jest.spyOn(functions, "changeTodo");
+        mockedRemoveAllTodos = jest.spyOn(functions, "removeAllTodos");
         document.body.innerHTML = `
         <form id="newTodoForm">
         <div>
@@ -33,6 +35,7 @@ describe("main tests", () => {
         mockedCreateHtml.mockReset();
         mockedDisplayError.mockReset();
         mockedAddTodo.mockReset();
+        mockedRemoveAllTodos.mockReset();
     })
 
     test("it should add a todo and call createHtml", () => {
@@ -90,5 +93,24 @@ describe("main tests", () => {
         expect(mockedCreateHtml).toHaveBeenCalled();
         expect(todo.done).toBe(false);
     });
+    test("it should remove all todos and call createHtml", () => {
+        const todos: Todo[] = [
+            { text: "Todo 1", done: false },
+            {text: "Todo 2", done: true },
+
+        ]
+
+        mockedRemoveAllTodos.mockImplementation((todos: Todo[]) => {
+            todos.splice(0, todos.length);
+        });
+        mockedCreateHtml.mockImplementation(() => {});
+
+        clearTodos(todos);
+
+        expect(mockedRemoveAllTodos).toHaveBeenCalledWith(todos);
+        expect(mockedCreateHtml).toHaveBeenCalled();
+        expect(todos.length).toBe(0);
+    });
+
 
 });
