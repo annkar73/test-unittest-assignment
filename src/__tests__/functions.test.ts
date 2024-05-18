@@ -1,4 +1,4 @@
-import { removeAllTodos } from "../ts/functions";
+import { removeAllTodos, changeTodo } from "../ts/functions";
 import { Todo } from "../ts/models/todo";
 
 describe("functions functions", () => {
@@ -17,6 +17,19 @@ describe("functions functions", () => {
         removeAllTodos(todos);
 
         expect(todos.length).toBe(0);
+    });
+    test("should change status from false to true", () => {
+        const todo: Todo = { text: "test Todo", done: false };
+
+        changeTodo(todo);
+
+        expect(todo.done).toBe(true);
+    });
+    test("should change status from true to false", () => {
+        const todo: Todo = { text: "test Todo", done: true };
+
+        changeTodo(todo);
+        expect(todo.done).toBe(false);
     });
 
 });
